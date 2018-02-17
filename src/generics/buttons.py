@@ -32,3 +32,4 @@ class Joystick(object):
     
   def __str__(self):
     return "%s: (%+f, %+f)" % (self.name, self.value[0], self.value[1])
+    

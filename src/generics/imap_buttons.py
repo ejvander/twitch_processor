@@ -30,3 +30,19 @@ class IMJoystick(Joystick, ImgMap):
 
   def generate_value(self):
     None
+    
+class IMLeverButton(ToggleButton, ImgMap):
+
+  def __init__(self, name):
+    super(IMLeverButton, self).__init__(name)
+    
+  def parse_value(self, img):
+    self.populate_img(img)
+    self.generate_value()
+    None
+
+  def generate_value(self):
+    None
+    
+  def __str__(self):
+    return "%s: %f" % (self.name, self.value)

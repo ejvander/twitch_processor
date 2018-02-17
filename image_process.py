@@ -18,6 +18,7 @@ print "%f fps video" % (vidcap.get(cv2.CAP_PROP_FPS))
 # Initialize count to start time
 count = START_TIME
 success = True
+controller = JSTNPs4Controller()
 while success:
   success, image = vidcap.read()
   count += 1
@@ -25,7 +26,6 @@ while success:
   #  print "Processed %d seconds" % (count/60)
     
   controller_img = image[CONTROLLER_TOP:CONTROLLER_BOTTOM, CONTROLLER_LEFT:CONTROLLER_RIGHT]
-  controller = JSTNPs4Controller()
   controller.parse_img(controller_img)
   
   # Overwrite current line to keep console clean

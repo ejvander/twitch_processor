@@ -2,24 +2,30 @@ import cv2
 import numpy as np
 import math
 
-from generics.imap_buttons import IMToggleButton, IMJoystick
+from generics.imap_buttons import IMToggleButton, IMJoystick, IMLeverButton
 
 DEBUG = False
 
 class JSTNToggleButton(IMToggleButton):
 
-  pressed_color_cutoff = 50
-
   def __init__(self, name):
     super(JSTNToggleButton, self).__init__(name)
+    # default color cutoff for buttons
+    self.pressed_color_cutoff = (2, 50)
+    
+  def set_color_cutoff(self, cutoff):
+    self.pressed_color_cutoff = cutoff
     
   def generate_value(self):
-    blue, green, red = (self.img[0].mean(), self.img[1].mean(), self.img[2].mean())
-    if(red > self.pressed_color_cutoff):
+    colors = (self.img[0].mean(), self.img[1].mean(), self.img[2].mean())
+    #print "%s colors: %d, %d, %d" % (self.name, colors[0], colors[1], colors[2])
+    #cv2.imshow('image', self.img)
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
+    if(colors[self.pressed_color_cutoff[0]] > self.pressed_color_cutoff[1]):
       self.value = 1
     else:
       self.value = 0
-    None
 
 class JSTNJoystick(IMJoystick):
 
@@ -81,8 +87,27 @@ class JSTNJoystick(IMJoystick):
         cv2.arrowedLine(self.img, (i[0], i[1]), (self.center[0], self.center[1]), (0,0,255),2)
 
       cv2.imshow('detected circles',self.img)
-      #cv2.imshow('image', self.img)
       cv2.waitKey(1)
       #cv2.destroyAllWindows()
     else:
       self.value = (0,0)
+      
+class JSTNLeverButton(IMLeverButton):
+
+  def __init__(self, name):
+    super(JSTNLeverButton, self).__init__(name)
+    # default color cutoff for buttons
+    self.min_color = [20, 20, 20]
+    self.max_color = [200, 200, 200]
+    
+  def set_color_range(self, min_color, max_color):
+    self.min_color = min_color
+    self.max_color = max_color
+    self.avg_diff = np.subtract(max_color, min_color).mean()
+    
+  def generate_value(self):
+    colors = (self.img[0].mean(), self.img[1].mean(), self.img[2].mean())
+    
+    self.value = np.subtract(colors, self.min_color).mean()/self.avg_diff
+    self.value = 0 if self.value < 0 else self.value 
+    self.value = 1 if self.value > 1 else self.value 

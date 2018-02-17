@@ -38,6 +38,12 @@ class Ps4Controller(Controller):
     self.buttons['square'] = btnFactory.make_button("toggle", 'square')
     self.buttons['triangle'] = btnFactory.make_button("toggle", 'triangle')
     
+    self.buttons['L1'] = btnFactory.make_button("toggle", 'L1')
+    self.buttons['R1'] = btnFactory.make_button("toggle", 'R1')
+    
+    self.buttons['L2'] = btnFactory.make_button("lever", 'L2')
+    self.buttons['R2'] = btnFactory.make_button("lever", 'R2')
+    
     self.buttons['left_joystick'] = btnFactory.make_button("joystick", 'left_joystick')
     #self.buttons['right_joystick'] = btnFactory.make_button("joystick", 'right_joystick')
     
