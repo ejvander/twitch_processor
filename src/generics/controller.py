@@ -14,7 +14,13 @@ class Controller(object):
   
   def define_buttons(self, btnFactory):
     Continue
-    
+  
+  def get_value_arr(self):
+    out_arr = []
+    for button in self.buttons:
+      out_arr.append(self.buttons[button].get_nn_value())
+    return out_arr  
+  
   def __str__(self):
     out_str = ""
     for button in self.buttons:

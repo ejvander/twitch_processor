@@ -13,6 +13,9 @@ class JSTNToggleButton(IMToggleButton):
     # default color cutoff for buttons
     self.pressed_color_cutoff = (2, 50)
     
+  def get_nn_value(self):
+    return self.value
+    
   def set_color_cutoff(self, cutoff):
     self.pressed_color_cutoff = cutoff
     
@@ -49,6 +52,9 @@ class JSTNJoystick(IMJoystick):
     mask = cv2.inRange(self.img, lower, upper)
     mask = cv2.medianBlur(mask,7)
     return mask
+    
+  def get_nn_value(self):
+    return [(self.value[0]+1)/2, (self.value[1]+1)/2]
   
   def correct_offset(self, val, val2):
     sign = -1 if val < 0 else 1
@@ -86,8 +92,8 @@ class JSTNJoystick(IMJoystick):
         self.value = self.normalize_value(((i[0] - self.center[0]), (self.center[1]-i[1])))
         cv2.arrowedLine(self.img, (i[0], i[1]), (self.center[0], self.center[1]), (0,0,255),2)
 
-      cv2.imshow('detected circles',self.img)
-      cv2.waitKey(1)
+      #cv2.imshow('detected circles',self.img)
+      #cv2.waitKey(1)
       #cv2.destroyAllWindows()
     else:
       self.value = (0,0)
@@ -99,6 +105,9 @@ class JSTNLeverButton(IMLeverButton):
     # default color cutoff for buttons
     self.min_color = [20, 20, 20]
     self.max_color = [200, 200, 200]
+  
+  def get_nn_value(self):
+    return self.value
     
   def set_color_range(self, min_color, max_color):
     self.min_color = min_color
